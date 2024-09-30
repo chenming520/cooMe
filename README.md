@@ -1,7 +1,7 @@
 ##使用方式
 ####composer引用
 ```
-composer require kscsdk/ksyun_sdk
+composer require coolme/ksyun_sdk
 ```
 ####ak|sk配置
 >获取到用户的aksk后配置在文件
