@@ -757,6 +757,32 @@ function testSetErrorPageConfig()
 	echo (String)$response->getStatusCode();
 }
 
+/**
+ * 将源站的内容主动预热到Cache节点上，用户首次访问可直接命中缓存，缓解源站压力。
+ * 注意：
+ * 每个 Url 必须以http://或者https://开头
+ * 每个 Url 最大长度 1000 字符
+ * 每个 Url 所在的域名必须是该用户在金山云加速的域名。
+ * Url 如果包含中文字符
+ * 单次调用 Url 上限为1000条
+ * 预热仅支持Url，不支持目录预热，不支持正则
+ */
+function testPreloadCaches()
+{
+    global $ak;
+    global $sk;
+    $data = "{\"Urls\": [{\"Url\": \"https:\/\/down.x7sy.com\/game\/android\/5\/4773/9772_5_1-205-0_20240925112200_8076.apk\"}]}";
+    $params = [
+        'v4_credentials' =>[
+            'ak' => $ak,
+            'sk' => $sk
+        ],
+        'body' => $data,
+    ];
+    $response = Cdn::getInstance()->request('PreloadCaches', $params);
+    echo (String)$response->getBody();
+    echo (String)$response->getStatusCode();
+}
 
 //testGetCdnDomains();
 //testAddCdnDomain();
@@ -791,4 +817,4 @@ function testSetErrorPageConfig()
 //testSetForceRedirectConfig();
 //testSetHttp2OptionConfig();
 //testSetPageCompressConfig();
-testSetErrorPageConfig();
+testPreloadCaches();
